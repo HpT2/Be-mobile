@@ -18,7 +18,7 @@ export class WalletService {
         private usersModel: mongoose.Model<Users>
     ){}
 
-    async findwallets(query: Query): Promise<wallets[]> {
+    async findwallets(query: Query){
         return await this.walletsModel.find(query);
     }
 
@@ -74,18 +74,15 @@ export class WalletService {
     }
     async deleteWallets(query:deleteWallets)
     {
-        const {email} = query
-        const users = await this.usersModel.findOne({email})
-        if (!users)
-            throw new BadRequestException('invalid email');
-        const object = await this.walletsModel.findOne(query);
-        if(!object)
-            throw new NotFoundException('wallets name is not existed')
-        await this.walletsModel.findOneAndDelete(query)
-        const message =  'Success';
-        return {message}
+        return await this.walletsModel.findOneAndDelete(query)
     }
 
+    async findById(query: Query) {
+        return await this.walletsModel.findOne(query);
+    }
 
-
+    async updateWallets(query: Query) {
+        const{ _id, ...remaining} = query
+        return await this.walletsModel.findByIdAndUpdate(_id,remaining)
+    }
 }

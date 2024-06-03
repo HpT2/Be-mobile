@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose = require("mongoose");
 const users_schema_1 = require("./schema/users-schema");
+const bcrypt = require("bcrypt");
 let UsersService = class UsersService {
     constructor(usersmodel) {
         this.usersmodel = usersmodel;
@@ -32,8 +33,21 @@ let UsersService = class UsersService {
         const user = await this.usersmodel.findOne({ email });
         if (user)
             throw new common_1.BadRequestException('email already exists');
+        const salt = await bcrypt.genSalt();
+        const hash = await bcrypt.hash(users.password, salt);
+        users.password = hash;
         const res = await this.usersmodel.create(users);
         return res;
+    }
+    async login(query) {
+        const { email, password } = query;
+        const user = await this.usersmodel.findOne({ email });
+        if (!user)
+            throw new common_1.BadRequestException('not found email');
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch)
+            throw new common_1.BadRequestException("wrong password");
+        return user;
     }
     async changepassword(change_password) {
         const values = Object.values(change_password);

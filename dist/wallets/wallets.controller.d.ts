@@ -31,13 +31,21 @@ import { money_wallets } from './dto/money_wallets-dto';
 export declare class WalletsController {
     private walletsService;
     constructor(walletsService: WalletService);
-    findwallets(query: ExpressQuery): Promise<import("./schema/wallets-schema").wallets[]>;
+    findwallets(query: ExpressQuery): Promise<(import("mongoose").Document<unknown, {}, import("./schema/wallets-schema").wallets> & import("./schema/wallets-schema").wallets & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]>;
     createWallets(wallets: createWalletsDto): Promise<import("mongoose").Document<unknown, {}, import("./schema/wallets-schema").wallets> & import("./schema/wallets-schema").wallets & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    deleteWallets(query: deleteWallets): Promise<{
-        message: string;
+    deleteWallets(query: deleteWallets): Promise<import("mongoose").Document<unknown, {}, import("./schema/wallets-schema").wallets> & import("./schema/wallets-schema").wallets & {
+        _id: import("mongoose").Types.ObjectId;
     }>;
     Depositmoney(query: money_wallets): Promise<string>;
     withdrawmoney(query: money_wallets): Promise<string>;
+    findWalletsById(query: ExpressQuery): Promise<import("mongoose").Document<unknown, {}, import("./schema/wallets-schema").wallets> & import("./schema/wallets-schema").wallets & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
+    updateWallets(query: ExpressQuery): Promise<import("mongoose").Document<unknown, {}, import("./schema/wallets-schema").wallets> & import("./schema/wallets-schema").wallets & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
 }

@@ -7,6 +7,8 @@ import { Query } from 'express-serve-static-core';
 import { change_password } from './dto/change_password-dto';
 import { createWalletsDto } from 'src/wallets/dto/createWallets-dto';
 import { createUsersDto } from './dto/create-users-dto';
+import {loginDTO} from './dto/login-dto'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UsersService {
@@ -22,13 +24,27 @@ export class UsersService {
         return await this.usersmodel.find(query);
     }
 
-    async create(users:Users): Promise<Users>{
+    async create(users:Users){
         const email = users.email
         const user = await this.usersmodel.findOne({email});
         if(user)
             throw new BadRequestException('email already exists');
+        const salt = await bcrypt.genSalt();
+        const hash = await bcrypt.hash(users.password, salt);
+        users.password = hash
         const res = await this.usersmodel.create(users)
         return res
+    }
+
+    async login (query:loginDTO){
+        const {email,password} = query
+        const user = await this.usersmodel.findOne({email});
+        if(!user)
+            throw new BadRequestException('not found email');
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch)
+            throw new BadRequestException("wrong password")
+        return user
     }
     
     async changepassword(change_password:change_password): Promise<{message:String}>{

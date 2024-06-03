@@ -34,4 +34,4 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], getAllistoriesDTO.prototype, "end_date", void 0);
-//# sourceMappingURL=getallhistoriesDTO.js.map
+//# sourceMappingURL=getAllHistoriesDTO.js.map

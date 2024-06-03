@@ -16,9 +16,8 @@ class deleteBudgetDTO {
 exports.deleteBudgetDTO = deleteBudgetDTO;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'The name of Budget to delete',
-        example: 'toys Budget'
+        description: 'budget _id'
     }),
     __metadata("design:type", String)
-], deleteBudgetDTO.prototype, "name", void 0);
+], deleteBudgetDTO.prototype, "_id", void 0);
 //# sourceMappingURL=deleteBudget.js.map
